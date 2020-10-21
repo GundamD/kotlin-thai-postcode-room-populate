@@ -1,0 +1,3 @@
+include ':thai-postcode-sdk'
+include ':app'
+rootProject.name = "thai-postcode-room-populate"

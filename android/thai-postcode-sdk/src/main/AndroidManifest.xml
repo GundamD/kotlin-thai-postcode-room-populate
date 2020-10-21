@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.gundamd.thai_postcode_sdk">
+    <application>
+        <provider
+            android:name=".ThaiPostcodeSDK$LibProvider"
+            android:authorities="${applicationId}.log.provider"
+            android:exported="false"
+            tools:node="merge" />
+    </application>
+</manifest>

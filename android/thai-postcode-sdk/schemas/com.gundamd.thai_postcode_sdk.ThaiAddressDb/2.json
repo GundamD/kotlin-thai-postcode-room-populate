@@ -1,0 +1,70 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "8ec2d6ace09b19c65180905c10dcb2bc",
+    "entities": [
+      {
+        "tableName": "thai_address",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`district` TEXT NOT NULL, `amphoe` TEXT NOT NULL, `province` TEXT NOT NULL, `zipcode` TEXT NOT NULL, `district_code` TEXT NOT NULL, `amphoe_code` TEXT NOT NULL, `province_code` TEXT NOT NULL, PRIMARY KEY(`district_code`))",
+        "fields": [
+          {
+            "fieldPath": "subDistrict",
+            "columnName": "district",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "district",
+            "columnName": "amphoe",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "province",
+            "columnName": "province",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "zipcode",
+            "columnName": "zipcode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "districtCode",
+            "columnName": "district_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amphoeCode",
+            "columnName": "amphoe_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "provinceCode",
+            "columnName": "province_code",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "district_code"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8ec2d6ace09b19c65180905c10dcb2bc')"
+    ]
+  }
+}

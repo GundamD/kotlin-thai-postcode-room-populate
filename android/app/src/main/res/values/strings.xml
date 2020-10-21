@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">thai-postcode-room-populate</string>
+    <string name="search_hint">Enter Province name to search</string>
+</resources>
