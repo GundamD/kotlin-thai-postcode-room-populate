@@ -2,7 +2,38 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.kezong.fat-aar'
+
+ext {
+    versionMajor = 1
+    versionMinor = 0
+    versionPatch = 0
+    bintrayRepo = 'thai-postcode-room-populate'
+    bintrayName = 'com.gundamd.thai_postcode_sdk'
+    publishedGroupId = 'com.gundamd.thai_postcode_sdk'
+    libraryName = 'thai-postcode-sdk'
+    artifact = 'thai-postcode-sdk'
+    libraryDescription = 'Library for search post code/zip code with address, implement by kotlin room populate.'
+    siteUrl = 'https://github.com/GundamD/kotlin-thai-postcode-room-populate'
+    gitUrl = 'https://github.com/GundamD/kotlin-thai-postcode-room-populate.git'
+    libVersionCode = generateVersionCode()
+    libraryVersion = generateVersionName(versionMajor, versionMinor, versionPatch, libVersionCode)
+    developerId = 'gundamd'
+    developerName = 'gundamd'
+    developerEmail = 'apichainahom@gmail.com'
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+
+def static generateVersionCode() {
+    return (System.currentTimeMillis() / 1000).toInteger()
+}
+
+def static generateVersionName(versionMajor, versionMinor, versionPatch, versionCode) {
+    String versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+    return "${versionName}-${versionCode}"
+}
 
 android {
     compileSdkVersion 30
@@ -11,14 +42,14 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode libVersionCode
+        versionName libraryVersion
 
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [
                         "room.schemaLocation": "$projectDir/schemas".toString(),
-                        "room.incremental":"true"
+                        "room.incremental"   : "true"
                 ]
             }
         }
@@ -56,3 +87,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
+
+//Add these lines to publish library to bintray. This is the readymade scripts made by github user nuuneoi to make uploading to bintray easy.
+//Place it at the end of the file
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
