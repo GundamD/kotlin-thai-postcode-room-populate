@@ -30,4 +30,4 @@ We can initial and search post code simply using `ThaiPostcodeSDK` by below
 ```kotlin
  val addressList: List<ThaiAddress> = ThaiPostcodeSDK.instance().searchByProvince(province = string, maxCount = 30)
 ```
-Note: `ThaiPostcodeSDK` use room library query data, your function should work in background thread 
+Note: `ThaiPostcodeSDK` uses Room library to query data. Your function should run in a background thread.
