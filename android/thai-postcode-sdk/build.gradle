@@ -2,27 +2,18 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply 'maven-publish'  // 1. Apply plugin
 
 ext {
     versionMajor = 1
     versionMinor = 0
     versionPatch = 0
-    bintrayRepo = 'thai-postcode-room-populate'
-    bintrayName = 'com.gundamd.thai_postcode_sdk'
-    publishedGroupId = 'com.gundamd.thai_postcode_sdk'
-    libraryName = 'thai-postcode-sdk'
-    artifact = 'thai-postcode-sdk'
-    libraryDescription = 'Library for search post code/zip code with address, implement by kotlin room populate.'
-    siteUrl = 'https://github.com/GundamD/kotlin-thai-postcode-room-populate'
-    gitUrl = 'https://github.com/GundamD/kotlin-thai-postcode-room-populate.git'
-    libVersionCode = generateVersionCode()
-    libraryVersion = generateVersionName(versionMajor, versionMinor, versionPatch, libVersionCode)
-    developerId = 'gundamd'
-    developerName = 'gundamd'
-    developerEmail = 'apichainahom@gmail.com'
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
+    mGroupId = 'com.gundamd.thai_postcode_sdk'
+    mArtifactId = "thai-postcode-sdk"
+    mVersionCode = generateVersionCode()
+    mVersionName = generateVersionName(versionMajor, versionMinor, versionPatch, libVersionCode)
+    mLibraryName = "thai-postcode-sdk"
+    mLibraryDescription = "thai-postcode-sdk"
 }
 
 
@@ -42,8 +33,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode libVersionCode
-        versionName libraryVersion
+        versionCode mVersionCode
+        versionName mVersionName
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -88,7 +79,46 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
-//Add these lines to publish library to bintray. This is the readymade scripts made by github user nuuneoi to make uploading to bintray easy.
-//Place it at the end of the file
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+
+// 3. Declare task for creation of android sources.
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+
+// 4. Make configuration for publishing artifact.
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId mGroupId
+                artifactId mArtifactId
+                version mVersionName
+
+                from components.release
+
+                artifact androidSourcesJar
+
+                pom {
+                    name = mLibraryName
+                    description = mLibraryDescription
+                }
+            }
+        }
+
+        // 5. Update repository details and credentials.
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/GundamD/test-publishing-github-package")
+                credentials {
+                    username = System.getenv("GPR_USER")
+                    password = System.getenv("GPR_KEY")
+                }
+            }
+        }
+    }
+}
+
+// Assembling should be performed before publishing package
+publish.dependsOn assemble
